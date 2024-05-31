@@ -1,0 +1,29 @@
+import serial
+import time
+import RPi.GPIO as GPIO
+
+# Setup GPIO pins
+GPIO.setmode(GPIO.BCM)
+LED_PIN = 18
+BUZZER_PIN = 23
+GPIO.setup(LED_PIN, GPIO.OUT)
+GPIO.setup(BUZZER_PIN, GPIO.OUT)
+
+# Open serial connection to Arduino Nano
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+ser.flush()
+
+while True:
+    if ser.in_waiting > 0:
+        line = ser.readline().decode('utf-8').rstrip()
+        print(line)
+        
+        data = eval(line)  # Convert string representation of dict to dict
+        if data["motion"]:
+            GPIO.output(LED_PIN, GPIO.HIGH)
+            GPIO.output(BUZZER_PIN, GPIO.HIGH)
+        else:
+            GPIO.output(LED_PIN, GPIO.LOW)
+            GPIO.output(BUZZER_PIN, GPIO.LOW)
+
+    time.sleep(1)  # Delay before next reading
