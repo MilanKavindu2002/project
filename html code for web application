@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home Security Dashboard</title>
+    <script>
+        function fetchData() {
+            fetch('/data')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('temperature').innerText = data.temperature;
+                    document.getElementById('humidity').innerText = data.humidity;
+                    document.getElementById('motion').innerText = data.motion ? "Yes" : "No";
+                });
+        }
+        setInterval(fetchData, 2000);
+    </script>
+</head>
+<body onload="fetchData()">
+    <h1>Smart Home Security Dashboard</h1>
+    <p>Temperature: <span id="temperature"></span> °C</p>
+    <p>Humidity: <span id="humidity"></span> %</p>
+    <p>Motion Detected: <span id="motion"></span></p>
+</body>
+</html>
